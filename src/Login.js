@@ -14,6 +14,7 @@ async function signInWithSpotify(e) {
     provider: "spotify",
     options: {
       scopes: "user-top-read",
+      redirectTo: "/",
     },
   });
 }

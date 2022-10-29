@@ -78,7 +78,7 @@ export default function Dashboard({ code }) {
       list.style.overflowY = "auto";
       viewport.setAttribute("content", "width=device-width, initial-scale=1");
       trademark.hidden = true;
-    }, "500");
+    }, "2000");
   }
 
   // Renderer callback with condition
@@ -223,7 +223,7 @@ export default function Dashboard({ code }) {
             className='d-flex flex-column justify-content-center align-items-center spotify-player'
             id='spotify-player'
           >
-            <div hidden id='trademark'>
+            <div id='trademark'>
               <div
                 className='d-flex flex-row justify-content-center align-items-center btn-sm btn-secondary my-3'
                 style={{

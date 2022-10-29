@@ -223,7 +223,7 @@ export default function Dashboard({ code }) {
             className='d-flex flex-column justify-content-center align-items-center spotify-player'
             id='spotify-player'
           >
-            <div id='trademark'>
+            <div hidden id='trademark'>
               <div
                 className='d-flex flex-row justify-content-center align-items-center btn-sm btn-secondary my-3'
                 style={{

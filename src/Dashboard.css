@@ -1,0 +1,48 @@
+#root {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='1440' height='1440' preserveAspectRatio='none' viewBox='0 0 1440 1440'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1028%26quot%3b)' fill='none'%3e%3crect width='1440' height='1440' x='0' y='0' fill='%230e2a47'%3e%3c/rect%3e%3cpath d='M -60.84657787185711%2c288 C 83.15%2c412.4 371.15%2c831.4 659.1534221281429%2c910 C 947.15%2c988.6 1091.15%2c691.8 1379.153422128143%2c681 C 1667.15%2c670.2 2086.98%2c943.4 2099.1534221281427%2c856 C 2111.32%2c768.6 1571.83%2c366.4 1440%2c244' stroke='rgba(51%2c 121%2c 194%2c 0.58)' stroke-width='2'%3e%3c/path%3e%3cpath d='M -163.4579897676374%2c1051 C -19.46%2c935.4 268.54%2c486.6 556.5420102323626%2c473 C 844.54%2c459.4 988.54%2c935.4 1276.5420102323626%2c983 C 1564.54%2c1030.6 1963.85%2c678.2 1996.5420102323626%2c711 C 2029.23%2c743.8 1551.31%2c1059.8 1440%2c1147' stroke='rgba(51%2c 121%2c 194%2c 0.58)' stroke-width='2'%3e%3c/path%3e%3cpath d='M -454.983719288983%2c480 C -310.98%2c604 -22.98%2c1063.6 265.016280711017%2c1100 C 553.02%2c1136.4 697.02%2c678.8 985.016280711017%2c662 C 1273.02%2c645.2 1614.02%2c1041.2 1705.0162807110169%2c1016 C 1796.01%2c990.8 1493%2c632 1440%2c536' stroke='rgba(51%2c 121%2c 194%2c 0.58)' stroke-width='2'%3e%3c/path%3e%3cpath d='M -687.0414852521808%2c873 C -543.04%2c842 -255.04%2c687.8 32.95851474781918%2c718 C 320.96%2c748.2 464.96%2c1050.4 752.9585147478192%2c1024 C 1040.96%2c997.6 1335.55%2c622.8 1472.9585147478192%2c586 C 1610.37%2c549.2 1446.59%2c789.2 1440%2c840' stroke='rgba(51%2c 121%2c 194%2c 0.58)' stroke-width='2'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1028'%3e%3crect width='1440' height='1440' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+  background-repeat: repeat;
+}
+
+#top-track-list {
+  scroll-snap-type: x mandatory;
+}
+
+/*
+ *  STYLE 7
+ */
+
+.style-7::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: transparent;
+  border-radius: 10px;
+  margin-top: 6px;
+  margin-bottom: 0px;
+}
+
+.style-7::-webkit-scrollbar {
+  width: 10px;
+  background-color: transparent;
+}
+
+.style-7::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.44, rgba(209, 209, 209, 0.418))
+      /* color-stop(0.44, rgb(122, 153, 217)),
+    color-stop(0.72, rgb(73, 125, 189)),
+    color-stop(0.86, rgb(28, 58, 148)) */
+  );
+}
+
+.navbar {
+  background: rgb(7, 21, 36);
+  background: linear-gradient(
+    180deg,
+    rgba(7, 21, 36, 0.5382528011204482) 0%,
+    rgba(14, 42, 71, 1) 39%,
+    rgba(14, 42, 71, 1) 100%
+  );
+}

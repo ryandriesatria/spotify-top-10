@@ -1,11 +1,7 @@
-import { useState } from "react";
 import { FastAverageColor } from "fast-average-color";
+import React from "react";
 
-export default function TopTrackList({ track, idx, chooseTrack }) {
-  function handlePlay() {
-    chooseTrack(track);
-  }
-
+export const TopArtistsList = ({ track, idx }) => {
   function changeBgColor() {
     const fac = new FastAverageColor();
     const container = document.querySelector(`.img-${track.id}`);
@@ -26,13 +22,12 @@ export default function TopTrackList({ track, idx, chooseTrack }) {
         idx === 9 ? "mx-2 mt-2" : "m-2"
       } align-items-center img-${track.id}`}
       style={{ cursor: "pointer", borderRadius: "10px" }}
-      onClick={handlePlay}
       onLoad={changeBgColor}
     >
       <img
         className='flex'
         crossOrigin='anonymous'
-        src={track.album.images[0].url}
+        src={track.images[0].url}
         style={{ height: "64px", width: "64px", borderRadius: "5px" }}
       />
       <div className='flex-grow-1 mx-3'>
@@ -45,12 +40,6 @@ export default function TopTrackList({ track, idx, chooseTrack }) {
           className={"d-flex justify-content-center"}
         >
           {track.name}
-        </div>
-        <div
-          style={{ fontSize: "12px" }}
-          className={"d-flex justify-content-center"}
-        >
-          {track.artists[0].name}
         </div>
       </div>
       <div
@@ -78,4 +67,4 @@ export default function TopTrackList({ track, idx, chooseTrack }) {
       </div>
     </div>
   );
-}
+};

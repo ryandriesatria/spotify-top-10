@@ -28,10 +28,12 @@ export default function Player({ accessToken, trackUri, defaultTrack }) {
   const theme = "black"; // or 'white'
 
   return (
-    <SpotifyPlayer
-      uri={trackUri ? trackUri : defaultTrack}
-      size={size}
-      view={view}
-    />
+    <>
+      <SpotifyPlayer
+        uri={trackUri ? trackUri : defaultTrack}
+        size={size}
+        view={view}
+      />
+    </>
   );
 }

@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 import { createClient } from "@supabase/supabase-js";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const supabase = createClient(
   process.env.REACT_APP_API_URL,
@@ -38,7 +39,24 @@ function App() {
 
   // console.log(token);
 
-  return token ? <Dashboard code={token} /> : <Login />;
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path='/'
+          element={
+            token ? <Dashboard code={token} page={"tracks"} /> : <Login />
+          }
+        />
+        <Route
+          path='/artists'
+          element={
+            token ? <Dashboard code={token} page={"artists"} /> : <Login />
+          }
+        />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;

@@ -1,8 +1,15 @@
-import { useState, useEffect, cloneElement } from "react";
+import { useState, useEffect, cloneElement, useRef } from "react";
 import useAuth from "./useAuth";
 import Player from "./Player";
 import TrackSearchResult from "./TrackSearchResult";
-import { Container, Form, Navbar } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Form,
+  Navbar,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "react-bootstrap";
 import SpotifyWebApi from "spotify-web-api-js";
 import axios from "axios";
 import TopTrackList from "./TopTrackList";
@@ -13,12 +20,13 @@ import ResponsiveNavbar from "./Navbar";
 import ReactLoading from "react-loading";
 import { FadeIn } from "react-slide-fade-in";
 import Countdown from "react-countdown";
+import { TopArtistsList } from "./TopArtistsList";
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_CLIENT_ID,
 });
 
-export default function Dashboard({ code }) {
+export default function Dashboard({ code, page }) {
   const accessToken = code;
   // const [search, setSearch] = useState("");
   // const [searchResults, setSearchResults] = useState([]);
@@ -26,6 +34,8 @@ export default function Dashboard({ code }) {
   // const [lyrics, setLyrics] = useState("");
   const [topTracks, setTopTracks] = useState();
   const [loading, setLoading] = useState(true);
+  const [value, setValue] = useState(1);
+  const startDate = useRef(Date.now());
 
   function chooseTrack(track) {
     console.log(track);
@@ -121,19 +131,47 @@ export default function Dashboard({ code }) {
     }
   };
 
-  useEffect(() => {
-    if (!accessToken) return;
-    spotifyApi.setAccessToken(accessToken);
+  const handleLoading = (val) => {
+    setLoading(val);
+  };
 
+  const handleChange = (val) => {
+    setValue(val);
+    const time_range = { 1: "long_term", 2: "medium_term", 3: "short_term" };
     setLoading(true);
+    setPlayingTrack("");
     setTimeout(() => {
       axios
-        .get("https://api.spotify.com/v1/me/top/tracks", {
+        .get(`https://api.spotify.com/v1/me/top/${page}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
           },
-          params: { limit: 10, offset: 0 },
+          params: { time_range: time_range[val], limit: 10, offset: 0 },
+        })
+        .then((res) => {
+          setTopTracks(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    }, "1500");
+  };
+
+  useEffect(() => {
+    if (!accessToken) return;
+    spotifyApi.setAccessToken(accessToken);
+    setLoading(true);
+    setTimeout(() => {
+      axios
+        .get(`https://api.spotify.com/v1/me/top/${page}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          params: { time_range: "long_term", limit: 10, offset: 0 },
         })
         .then((res) => {
           setTopTracks(res.data);
@@ -148,13 +186,13 @@ export default function Dashboard({ code }) {
 
   return (
     <>
-      <ResponsiveNavbar />
+      <ResponsiveNavbar handleLoading={handleLoading} />
       <div id='save-to-jpg'>
         <Container
           id='dashboard-container'
           className='d-flex flex-column py-2 dashboard-container'
           style={{
-            height: "calc(93vh + 1.5px)",
+            height: "calc(93vh + 10px)",
             width: "auto",
             maxWidth: "500px",
             // marginTop: "8vh",
@@ -162,32 +200,50 @@ export default function Dashboard({ code }) {
         >
           <div id='dashboard-header' className='mx-2'>
             <h2 className='my-0 text-center' style={{ color: "#fff" }}>
-              Your Top 10 Tracks
+              Your Top 10 {page === "tracks" ? "Tracks" : "Artists"}
             </h2>
-            <p className='text-center my-0' style={{ color: "#fff" }}>
+            {/* <p className='text-center my-0' style={{ color: "#fff" }}>
               (approximately from last 6 months)
-            </p>
+            </p> */}
+            <div className='d-flex flex-row justify-content-center align-items-center mt-3'>
+              <ToggleButtonGroup
+                type='radio'
+                name='options'
+                value={value}
+                defaultValue={1}
+                onChange={handleChange}
+              >
+                <ToggleButton
+                  id='tbg-radio-1'
+                  value={1}
+                  className='mx-1'
+                  variant='outline-light'
+                  size='sm'
+                >
+                  All time
+                </ToggleButton>
+                <ToggleButton
+                  id='tbg-radio-1'
+                  value={2}
+                  className='mx-1'
+                  variant='outline-light'
+                  size='sm'
+                >
+                  6 months
+                </ToggleButton>
+                <ToggleButton
+                  id='tbg-radio-1'
+                  value={3}
+                  className='mx-1'
+                  variant='outline-light'
+                  size='sm'
+                >
+                  4 weeks
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </div>
           </div>
-          {/* <Form.Control
-        type='search'
-        placeholder='Search Songs/Artists'
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      <div className='flex-grow-1 my-2' style={{ overflowY: "auto" }}>
-        {searchResults.map((track) => (
-          <TrackSearchResult
-            track={track}
-            key={track.uri}
-            chooseTrack={chooseTrack}
-          />
-        ))}
-        {searchResults.length === 0 && (
-          <div className='text-center' style={{ whiteSpace: "pre" }}>
-            {lyrics}
-          </div>
-        )}
-      </div> */}
+
           <div
             id='top-track-list'
             className='flex-grow-1 mt-2 style-7'
@@ -195,13 +251,13 @@ export default function Dashboard({ code }) {
           >
             {loading ? (
               <div
-                className='d-flex flex-column align-items-center justify-content-center'
+                className='d-flex flex-column align-items-center justify-content-top mt-5'
                 style={{ height: "400px" }}
               >
                 <ReactLoading type='spin' />
                 <p className='f4 text-white my-4'>Loading ...</p>
               </div>
-            ) : (
+            ) : page === "tracks" ? (
               topTracks.items.map((track, index) => (
                 <FadeIn
                   from={index % 2 === 0 ? "left" : "right"}
@@ -215,6 +271,17 @@ export default function Dashboard({ code }) {
                     idx={index}
                     chooseTrack={chooseTrack}
                   />
+                </FadeIn>
+              ))
+            ) : (
+              topTracks.items.map((track, index) => (
+                <FadeIn
+                  from={index % 2 === 0 ? "left" : "right"}
+                  positionOffset={0}
+                  triggerOffset={1000}
+                  delayInMilliseconds={index * 400}
+                >
+                  <TopArtistsList track={track} key={track.id} idx={index} />
                 </FadeIn>
               ))
             )}
@@ -237,19 +304,35 @@ export default function Dashboard({ code }) {
                 </div>
               </div>
             </div>
-            <Countdown date={Date.now() + 5000} renderer={renderer} />
-            <FadeIn
-              from='top'
-              positionOffset={100}
-              triggerOffset={100}
-              delayInMilliseconds={500}
-            >
-              <Player
-                accessToken={accessToken}
-                trackUri={playingTrack?.uri}
-                defaultTrack={"spotify:track:4jzNb4SziJCRL7K7dVimn7"}
-              />
-            </FadeIn>
+            <Countdown
+              completed={false}
+              date={startDate.current + 5000}
+              renderer={renderer}
+            />
+            {loading ? (
+              <div
+                className='d-flex flex-column align-items-center justify-content-center'
+                style={{ height: "400px" }}
+              >
+                {/* <ReactLoading type='spin' />
+                <p className='f4 text-white my-4'>Loading ...</p> */}
+              </div>
+            ) : page == "tracks" ? (
+              <FadeIn
+                from='bottom'
+                positionOffset={0}
+                triggerOffset={100}
+                delayInMilliseconds={1000}
+              >
+                <Player
+                  accessToken={accessToken}
+                  defaultTrack={topTracks.items[0].uri}
+                  trackUri={playingTrack?.uri}
+                />
+              </FadeIn>
+            ) : (
+              ""
+            )}
           </div>
         </Container>
       </div>

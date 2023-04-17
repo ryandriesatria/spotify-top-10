@@ -88,7 +88,7 @@ export default function Dashboard({ code, page }) {
       list.style.overflowY = "auto";
       viewport.setAttribute("content", "width=device-width, initial-scale=1");
       trademark.hidden = true;
-    }, "2000");
+    }, "4000");
   }
 
   // Renderer callback with condition

@@ -61,7 +61,7 @@ export default function Dashboard({ code, page }) {
     // }
 
     const filter = (node) => {
-      if (node.nodeName == "#text") return true;
+      if (node.nodeName === "#text") return true;
 
       const exclusionClasses = ["btn-download"];
       return !exclusionClasses.some((classname) =>
@@ -219,6 +219,7 @@ export default function Dashboard({ code, page }) {
                   className='mx-1'
                   variant='outline-light'
                   size='sm'
+                  style={{ width: "90px" }}
                 >
                   All time
                 </ToggleButton>
@@ -228,6 +229,7 @@ export default function Dashboard({ code, page }) {
                   className='mx-1'
                   variant='outline-light'
                   size='sm'
+                  style={{ width: "90px" }}
                 >
                   6 months
                 </ToggleButton>
@@ -237,6 +239,7 @@ export default function Dashboard({ code, page }) {
                   className='mx-1'
                   variant='outline-light'
                   size='sm'
+                  style={{ width: "90px" }}
                 >
                   4 weeks
                 </ToggleButton>
@@ -296,6 +299,7 @@ export default function Dashboard({ code, page }) {
                 style={{
                   cursor: "pointer",
                   borderRadius: "1000px",
+                  width: "350px",
                 }}
               >
                 <div className='mx-2'>

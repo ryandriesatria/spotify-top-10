@@ -299,10 +299,13 @@ export default function Dashboard({ code, page }) {
                 style={{
                   cursor: "pointer",
                   borderRadius: "1000px",
-                  width: "350px",
+                  // width: "350px",
                 }}
               >
-                <div className='mx-2'>
+                <div
+                  className='d-flex flex-row justify-content-center align-items-center mx-2'
+                  style={{ width: "350px" }}
+                >
                   <i className='fa-brands fa-spotify mr-2'></i>
                   Made by @ryandrie with Spotify API
                 </div>

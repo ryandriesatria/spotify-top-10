@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 async function Logout() {
   sessionStorage.removeItem("token");
@@ -9,7 +9,7 @@ async function Logout() {
   window.location = "/";
 }
 
-function ResponsiveNavbar({ handleLoading }) {
+function ResponsiveNavbar({ handleLoading, loading, page }) {
   let navigate = useNavigate();
 
   return (
@@ -34,35 +34,61 @@ function ResponsiveNavbar({ handleLoading }) {
         className='justify-content-end'
       >
         <Nav>
-          <Nav.Link
-            onClick={() => {
-              handleLoading("true");
-              navigate("/");
+          <div
+            onClick={(e) => {
+              e.preventDefault();
+              if (page !== "tracks") {
+                handleLoading("true");
+              }
+              // navigate("/");
             }}
-            href='/'
             className='btn-sm'
             style={{ color: "white", fontSize: "calc(0.450rem + 0.5vw)" }}
           >
-            Tracks
-          </Nav.Link>
-          <Nav.Link
-            onClick={() => {
-              handleLoading("true");
-              navigate("/artists");
+            <Link
+              to='/'
+              style={{
+                textDecoration: "none",
+                color: loading ? "GrayText" : "white",
+                pointerEvents: loading ? "none" : "",
+              }}
+            >
+              Tracks
+            </Link>
+          </div>
+          <div
+            onClick={(e) => {
+              e.preventDefault();
+              if (page !== "artists") {
+                handleLoading("true");
+              }
+              // navigate("/artists");
             }}
-            href='/artists'
             className='btn-sm'
             style={{ color: "white", fontSize: "calc(0.450rem + 0.5vw)" }}
           >
-            Artists
-          </Nav.Link>
-          <Nav.Link
+            <Link
+              style={{
+                textDecoration: "none",
+                color: loading ? "GrayText" : "white",
+                pointerEvents: loading ? "none" : "",
+              }}
+              to='/artists'
+            >
+              Artists
+            </Link>
+          </div>
+          <div
             className='btn-sm'
             onClick={Logout}
-            style={{ color: "white", fontSize: "calc(0.450rem + 0.5vw)" }}
+            style={{
+              color: "white",
+              fontSize: "calc(0.450rem + 0.5vw)",
+              cursor: "pointer",
+            }}
           >
             Sign Out
-          </Nav.Link>
+          </div>
         </Nav>
       </Navbar.Collapse>
       {/* </Container> */}

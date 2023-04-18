@@ -36,6 +36,7 @@ export default function Dashboard({ code, page }) {
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState(1);
   const startDate = useRef(Date.now());
+  const [disable, setDisable] = useState(false);
 
   function chooseTrack(track) {
     console.log(track);
@@ -98,10 +99,11 @@ export default function Dashboard({ code, page }) {
       return (
         <div
           className='d-flex flex-row justify-content-center align-items-center btn-sm btn-primary my-3 btn-download'
-          onClick={saveToPng}
+          onClick={loading ? "" : saveToPng}
           style={{
             cursor: "pointer",
             borderRadius: "1000px",
+            background: loading ? "GrayText" : "",
             // width: "120px",
           }}
         >
@@ -133,9 +135,11 @@ export default function Dashboard({ code, page }) {
 
   const handleLoading = (val) => {
     setLoading(val);
+    setValue(1);
   };
 
   const handleChange = (val) => {
+    setDisable(true);
     setValue(val);
     const time_range = { 1: "long_term", 2: "medium_term", 3: "short_term" };
     setLoading(true);
@@ -152,6 +156,8 @@ export default function Dashboard({ code, page }) {
         .then((res) => {
           setTopTracks(res.data);
           setLoading(false);
+          setDisable(false);
+          console.log(topTracks);
         })
         .catch((err) => {
           console.log(err);
@@ -182,11 +188,15 @@ export default function Dashboard({ code, page }) {
           setLoading(false);
         });
     }, "1500");
-  }, [accessToken]);
+  }, [page, accessToken]);
 
   return (
     <>
-      <ResponsiveNavbar handleLoading={handleLoading} />
+      <ResponsiveNavbar
+        handleLoading={handleLoading}
+        loading={loading}
+        page={page}
+      />
       <div id='save-to-jpg'>
         <Container
           id='dashboard-container'
@@ -200,7 +210,7 @@ export default function Dashboard({ code, page }) {
         >
           <div id='dashboard-header' className='mx-2'>
             <h2 className='my-0 text-center' style={{ color: "#fff" }}>
-              Your Top 10 {page === "tracks" ? "Tracks" : "Artists"}
+              Your Top 10{page === "tracks" ? " Tracks" : " Artists"}
             </h2>
             {/* <p className='text-center my-0' style={{ color: "#fff" }}>
               (approximately from last 6 months)
@@ -219,7 +229,8 @@ export default function Dashboard({ code, page }) {
                   className='mx-1'
                   variant='outline-light'
                   size='sm'
-                  style={{ width: "90px" }}
+                  style={{ width: "90px", boxShadow: "none" }}
+                  disabled={disable}
                 >
                   All time
                 </ToggleButton>
@@ -229,7 +240,9 @@ export default function Dashboard({ code, page }) {
                   className='mx-1'
                   variant='outline-light'
                   size='sm'
-                  style={{ width: "90px" }}
+                  style={{ width: "90px", boxShadow: "none" }}
+                  disabled={disable}
+                  active
                 >
                   6 months
                 </ToggleButton>
@@ -239,7 +252,8 @@ export default function Dashboard({ code, page }) {
                   className='mx-1'
                   variant='outline-light'
                   size='sm'
-                  style={{ width: "90px" }}
+                  style={{ width: "90px", boxShadow: "none" }}
+                  disabled={disable}
                 >
                   4 weeks
                 </ToggleButton>
@@ -324,7 +338,7 @@ export default function Dashboard({ code, page }) {
                 {/* <ReactLoading type='spin' />
                 <p className='f4 text-white my-4'>Loading ...</p> */}
               </div>
-            ) : page == "tracks" ? (
+            ) : page === "tracks" ? (
               <FadeIn
                 from='bottom'
                 positionOffset={0}
